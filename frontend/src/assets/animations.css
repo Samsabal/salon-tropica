@@ -1,0 +1,15 @@
+/* Neon flicker animation - reusable across components */
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 8px currentColor, 0 0 16px currentColor, 0 0 24px currentColor;
+  }
+  20%, 24%, 55% {
+    opacity: 0.7;
+    text-shadow: 0 0 4px currentColor;
+  }
+}
+
+.neon-flicker {
+  animation: neonFlicker 8s infinite;
+}
