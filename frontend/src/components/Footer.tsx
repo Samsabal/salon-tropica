@@ -1,8 +1,10 @@
+import logoIcon from "../assets/logo-icon.png";
+
 export function Footer() {
   return (
     <footer className="relative border-t border-slate-800 py-6 text-xs text-slate-500">
       <img
-        src="/logo-icon.png"
+        src={logoIcon}
         alt="Salon Tropica logo"
         className="absolute -top-10 left-6 h-20 w-auto opacity-90"
         loading="lazy"

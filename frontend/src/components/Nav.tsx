@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import logoIcon from "../assets/logo-icon.png";
 
 export function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +57,7 @@ export function Nav() {
       <nav className="max-w-5xl mx-auto flex items-center justify-between px-4 py-3">
         
         {/* Logo Icon for Mobile Only */}
-        <img src="/logo-icon.png" alt="Logo" className="md:hidden w-8 h-8" />
+        <img src={logoIcon} alt="Logo" className="md:hidden w-8 h-8" />
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-4 text-base font-semibold uppercase">
