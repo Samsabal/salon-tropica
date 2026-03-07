@@ -1,5 +1,6 @@
 import croppedLogo from "../assets/logo-banner.png";
 import barBg from "../assets/hero-bar.jpg";
+import heroVideo from "../assets/video.mp4";
 import "../assets/animations.css";
 
 export function Hero() {
@@ -7,13 +8,18 @@ export function Hero() {
     <section
       id="home"
       className="relative overflow-hidden border-b border-slate-800 h-screen flex flex-col items-center justify-start pt-16 md:pt-20"
-      style={{
-        backgroundImage: `url(${barBg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed"
-      }}
     >
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster={barBg}
+      >
+        <source src={heroVideo} type="video/mp4" />
+      </video>
+
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-linear-to-b from-purple-950/40 via-darkBg/50 to-darkBg/60" />
       
