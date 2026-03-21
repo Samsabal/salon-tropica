@@ -14,7 +14,7 @@ export function OpeningHours() {
       id="openingstijden"
       className="max-w-5xl mx-auto px-4 py-12 space-y-4"
     >
-      <h2 className="text-2xl font-bold mb-2">Openingstijden</h2>
+      <h2 className="text-2xl font-bold mb-2">OPENINGSTIJDEN</h2>
       <div className="grid sm:grid-cols-2 gap-4">
         {hours.map(([day, time]) => (
           <div

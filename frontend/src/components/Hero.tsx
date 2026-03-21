@@ -63,13 +63,13 @@ export function Hero() {
           <div className="flex flex-wrap justify-center gap-4 pt-2">
             <a
               href="#contact"
-              className="px-6 py-2.5 bg-neonCyan text-darkBg font-bold text-base shadow-neon hover:brightness-110 hover:scale-105 transition-all uppercase tracking-wide"
+              className="px-6 py-2.5 rounded-xl bg-white text-darkBg font-bold text-base shadow-lg shadow-black/30 hover:bg-white/90 hover:scale-105 transition-all uppercase tracking-wide"
             >
               Contact ons
             </a>
             <a
               href="#openingstijden"
-              className="px-6 py-2.5 border-2 border-neonBlue text-neonBlue hover:bg-neonBlue hover:text-darkBg transition-all font-bold text-base uppercase tracking-wide"
+              className="px-6 py-2.5 rounded-xl border-2 border-white text-white hover:bg-white/15 transition-all font-bold text-base uppercase tracking-wide"
             >
               Openingstijden
             </a>

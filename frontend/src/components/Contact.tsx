@@ -5,7 +5,7 @@ export function Contact() {
       className="max-w-5xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8"
     >
       <div>
-        <h2 className="text-2xl font-bold mb-3">Contact &amp; Reservering</h2>
+        <h2 className="text-2xl font-bold mb-3">CONTACT &amp; RESERVERING</h2>
         <ul className="space-y-2 text-slate-300 text-sm">
           <li>
             <span className="font-semibold text-slate-100">Telefoon:</span>{" "}
