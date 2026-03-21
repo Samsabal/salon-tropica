@@ -12,7 +12,7 @@ export function Nav() {
     ["Foto's", "#fotos"],
     ["Route", "#route"],
     ["Gastenboek", "#gastenboek"],
-    ["Contact & Reservering", "#contact"],
+    ["Contact en reservering", "#contact"],
   ];
 
   const handleLinkClick = () => {
@@ -70,7 +70,7 @@ export function Nav() {
         <img src={logoIcon} alt="Logo" className="md:hidden w-8 h-8" />
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-8 text-xl font-semibold uppercase">
+        <ul className="hidden md:flex gap-8 text-xl font-semibold">
           {menuItems.map(([label, href]) => (
             <li key={href}>
               <a
@@ -136,7 +136,7 @@ export function Nav() {
                 <a
                   href={href}
                   onClick={handleLinkClick}
-                  className={`block rounded-xl px-4 py-4 font-semibold uppercase text-lg hover:text-neonCyan hover:drop-shadow-[0_0_10px_rgba(0,245,255,0.8)] hover:bg-slate-800/30 transition-all ${
+                  className={`block rounded-xl px-4 py-4 font-semibold text-lg hover:text-neonCyan hover:drop-shadow-[0_0_10px_rgba(0,245,255,0.8)] hover:bg-slate-800/30 transition-all ${
                     activeSection === href
                       ? "text-neonCyan drop-shadow-[0_0_10px_rgba(0,245,255,0.8)] bg-slate-800/30"
                       : ""

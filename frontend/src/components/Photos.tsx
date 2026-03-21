@@ -74,7 +74,7 @@ export function Photos() {
 
   return (
     <section id="fotos" className="max-w-6xl mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold mb-2">FOTO'S</h2>
+      <h2 className="text-3xl font-bold mb-2">Foto's</h2>
       <p className="text-slate-300 mb-8">
         Bekijk de mooiste momenten van Salon Tropica.
       </p>

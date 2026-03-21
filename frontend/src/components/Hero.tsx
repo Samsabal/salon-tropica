@@ -51,10 +51,10 @@ export function Hero() {
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
-            <p className="text-xl font-semibold text-neonCyan drop-shadow-[0_0_10px_rgba(0,245,255,0.6)]">
-              KARAOKE BAR IN ROTTERDAM
+            <p className="text-2xl font-semibold text-neonCyan drop-shadow-[0_0_10px_rgba(0,245,255,0.6)]">
+              Karaoke bar in Rotterdam
             </p>
-            <p className="text-slate-300 text-sm md:text-base max-w-2xl mx-auto">
+            <p className="text-slate-300 text-lg md:text-lg max-w-2xl mx-auto">
               De gezelligste karaoke bar van Rotterdam. Voor vrijgezellenfeesten,
               bedrijfsuitjes, verjaardagen of gewoon een avond vol zangplezier.
             </p>
@@ -63,13 +63,13 @@ export function Hero() {
           <div className="flex flex-wrap justify-center gap-4 pt-2">
             <a
               href="#contact"
-              className="px-6 py-2.5 rounded-xl bg-white text-darkBg font-bold text-base shadow-lg shadow-black/30 hover:bg-white/90 hover:scale-105 transition-all uppercase tracking-wide"
+              className="inline-flex items-center justify-center text-center px-6 py-2.5 rounded-xl bg-white text-darkBg font-bold text-base shadow-lg shadow-black/30 hover:bg-white/90 hover:scale-105 transition-all tracking-wide"
             >
-              Contact ons
+              Contact Ons
             </a>
             <a
               href="#openingstijden"
-              className="px-6 py-2.5 rounded-xl border-2 border-white text-white hover:bg-white/15 transition-all font-bold text-base uppercase tracking-wide"
+              className="px-6 py-2.5 rounded-xl border-2 border-white text-white hover:bg-white/15 transition-all font-bold text-base tracking-wide"
             >
               Openingstijden
             </a>
