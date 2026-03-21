@@ -59,11 +59,7 @@ export function Nav() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 border-b border-transparent transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        isOnHero
-          ? "-translate-y-full opacity-0 pointer-events-none"
-          : "translate-y-0 opacity-100 pointer-events-auto"
-      } ${
+      <header className={`fixed top-0 left-0 right-0 z-50 border-b border-transparent transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] translate-y-0 opacity-100 pointer-events-auto ${
         isScrolled
           ? "bg-transparent backdrop-blur-none md:bg-darkBg/80 md:backdrop-blur md:border-slate-800"
           : "bg-transparent backdrop-blur-none"
@@ -74,7 +70,7 @@ export function Nav() {
         <img src={logoIcon} alt="Logo" className="md:hidden w-8 h-8" />
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex gap-4 text-base font-semibold uppercase">
+        <ul className="hidden md:flex gap-8 text-xl font-semibold uppercase">
           {menuItems.map(([label, href]) => (
             <li key={href}>
               <a
@@ -140,7 +136,7 @@ export function Nav() {
                 <a
                   href={href}
                   onClick={handleLinkClick}
-                  className={`block rounded-xl px-4 py-3 font-semibold uppercase hover:text-neonCyan hover:drop-shadow-[0_0_10px_rgba(0,245,255,0.8)] hover:bg-slate-800/30 transition-all ${
+                  className={`block rounded-xl px-4 py-4 font-semibold uppercase text-lg hover:text-neonCyan hover:drop-shadow-[0_0_10px_rgba(0,245,255,0.8)] hover:bg-slate-800/30 transition-all ${
                     activeSection === href
                       ? "text-neonCyan drop-shadow-[0_0_10px_rgba(0,245,255,0.8)] bg-slate-800/30"
                       : ""
