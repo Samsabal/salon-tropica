@@ -1,6 +1,6 @@
 import croppedLogo from "../assets/logo-banner.png";
 import barBg from "../assets/hero-bar.jpg";
-import heroVideo from "../assets/hero-video-1080p.mp4";
+import heroVideo from "../assets/hero-video.mp4";
 import "../assets/animations.css";
 
 export function Hero() {
