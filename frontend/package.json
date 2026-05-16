@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "generate:photos": "node scripts/generate-photo-manifest.mjs",
+    "prebuild": "npm run generate:photos",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

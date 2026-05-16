@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import logoIcon from '../assets/logo-icon.png';
 
 interface GalleryMonth {
   month: number;
   count: number;
   previewImage?: string;
+  images?: string[];
 }
 
 interface Gallery {
@@ -16,14 +18,19 @@ export function Photos() {
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
+  const [photosLoaded, setPhotosLoaded] = useState(0);
+  const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
+  const baseUrl = import.meta.env.BASE_URL;
+  const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  const assetPath = (relativePath: string) =>
+    `${normalizedBaseUrl}${relativePath.replace(/^\/+/, '')}`;
 
   useEffect(() => {
-    fetch('/photos/index.json')
+    fetch(assetPath('photos/index.json'))
       .then((res) => res.json())
       .then((data) => setGalleries(data.galleries));
-  }, []);
+  }, [baseUrl]);
 
-  // Get recent galleries (most recent first)
   const recentGalleries = galleries
     .flatMap((g) =>
       g.months.map((m) => ({
@@ -31,19 +38,41 @@ export function Photos() {
         month: m.month,
         count: m.count,
         previewImage: m.previewImage,
+        images: m.images,
       }))
     )
+    .filter((gallery) => gallery.count > 0)
     .sort((a, b) => b.year - a.year || b.month - a.month)
     .slice(0, 6);
 
   const handleGalleryClick = async (year: number, month: number) => {
     setSelectedYear(year);
     setSelectedMonth(month);
+    setPhotos([]);
+    setPhotosLoaded(0);
+    setIsLoadingPhotos(true);
 
     const monthStr = String(month).padStart(2, '0');
-    const basePath = `/photos/${year}/${monthStr}`;
+    const basePath = assetPath(`photos/${year}/${monthStr}`);
 
-    // Common photo sizes to try
+    const selectedGallery = galleries
+      .flatMap((gallery) =>
+        gallery.months.map((galleryMonth) => ({
+          year: gallery.year,
+          month: galleryMonth.month,
+          images: galleryMonth.images,
+        }))
+      )
+      .find((gallery) => gallery.year === year && gallery.month === month);
+
+    if (selectedGallery?.images?.length) {
+      const imageUrls = selectedGallery.images.map((image) => `${basePath}/${image}`);
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setIsLoadingPhotos(imageUrls.length > 0);
+      setPhotos(imageUrls);
+      return;
+    }
+
     const photoSizes = ['640x480', '1280x960', '326x245'];
     const basePhotoNames = [
       '00000354r', '00000357r', '00000360r', '00000365r', '00000367r', '00000370r',
@@ -53,18 +82,29 @@ export function Photos() {
     ];
 
     const photoUrls: string[] = [];
-    
+
     for (const photoName of basePhotoNames) {
       for (const size of photoSizes) {
         const url = `${basePath}/${photoName}-${size}.jpg`;
         photoUrls.push(url);
       }
-      // Also try without size suffix (for some images)
       photoUrls.push(`${basePath}/${photoName}.jpg`);
       photoUrls.push(`${basePath}/${photoName}.png`);
     }
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    setIsLoadingPhotos(photoUrls.length > 0);
     setPhotos(photoUrls);
+  };
+
+  const handlePhotoSettled = () => {
+    setPhotosLoaded((current) => {
+      const next = current + 1;
+      if (next >= photos.length) {
+        setIsLoadingPhotos(false);
+      }
+      return next;
+    });
   };
 
   const monthName = (m: number) =>
@@ -84,16 +124,13 @@ export function Photos() {
           {recentGalleries.map((gallery) => (
             <button
               key={`${gallery.year}-${gallery.month}`}
-              onClick={() => gallery.count > 0 && handleGalleryClick(gallery.year, gallery.month)}
-              disabled={gallery.count === 0}
-              className={`group relative overflow-hidden rounded-lg h-64 transition transform ${
-                gallery.count > 0 ? 'hover:scale-105 cursor-pointer' : 'opacity-50 cursor-not-allowed'
-              }`}
+              onClick={() => handleGalleryClick(gallery.year, gallery.month)}
+              className="group relative overflow-hidden rounded-lg h-64 transition transform hover:scale-105 cursor-pointer"
             >
               <img
-                src={`/photos/${gallery.year}/${String(gallery.month).padStart(2, '0')}/${gallery.previewImage || '00000354r-640x480.jpg'}`}
+                src={assetPath(`photos/${gallery.year}/${String(gallery.month).padStart(2, '0')}/${gallery.previewImage || '00000354r-640x480.jpg'}`)}
                 alt={`${monthName(gallery.month)} ${gallery.year}`}
-                className={`w-full h-full object-cover ${gallery.count > 0 ? 'group-hover:brightness-75' : ''} transition`}
+                className="w-full h-full object-cover group-hover:brightness-75 transition"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
                     'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23333" width="400" height="300"/%3E%3C/svg%3E';
@@ -122,6 +159,8 @@ export function Photos() {
                 setSelectedYear(null);
                 setSelectedMonth(null);
                 setPhotos([]);
+                setPhotosLoaded(0);
+                setIsLoadingPhotos(false);
               }}
               className="text-slate-300 hover:text-white transition flex items-center gap-2"
             >
@@ -135,6 +174,19 @@ export function Photos() {
             </h3>
           </div>
           <div className="flex justify-center">
+            {isLoadingPhotos && (
+              <div className="flex flex-col items-center justify-center gap-3 py-16 text-slate-300">
+                <img
+                  src={logoIcon}
+                  alt="Salon Tropica"
+                  className="h-10 w-10 neon-glow drop-shadow-[0_0_6px_rgba(0,245,255,0.6)] drop-shadow-[0_0_10px_rgba(255,78,205,0.45)]"
+                />
+                <div className="text-sm uppercase tracking-[0.2em] mt-2 text-slate-300 text-center">
+                  {"Foto's laden"}
+                  {photos.length > 0 ? ` (${photosLoaded}/${photos.length})` : ''}
+                </div>
+              </div>
+            )}
             <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
               {photos.map((photo, index) => (
                 <img
@@ -142,7 +194,9 @@ export function Photos() {
                   src={photo}
                   alt={`Foto ${index + 1}`}
                   className="w-full h-auto rounded-lg object-cover mb-4 break-inside-avoid"
+                  onLoad={handlePhotoSettled}
                   onError={(e) => {
+                    handlePhotoSettled();
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />

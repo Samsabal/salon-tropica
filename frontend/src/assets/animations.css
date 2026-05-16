@@ -13,3 +13,18 @@
 .neon-flicker {
   animation: neonFlicker 8s infinite;
 }
+
+@keyframes neonGlow {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 6px rgba(0,245,255,0.6)) drop-shadow(0 0 10px rgba(255,78,205,0.45));
+  }
+  20%, 24%, 55% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 3px rgba(0,245,255,0.35));
+  }
+}
+
+.neon-glow {
+  animation: neonGlow 8s infinite;
+}
