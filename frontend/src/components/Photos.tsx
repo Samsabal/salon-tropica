@@ -19,6 +19,7 @@ export function Photos() {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
   const [photosLoaded, setPhotosLoaded] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(6);
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
   const baseUrl = import.meta.env.BASE_URL;
   const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
@@ -43,7 +44,7 @@ export function Photos() {
     )
     .filter((gallery) => gallery.count > 0)
     .sort((a, b) => b.year - a.year || b.month - a.month)
-    .slice(0, 6);
+    .slice(0, visibleCount);
 
   const handleGalleryClick = async (year: number, month: number) => {
     setSelectedYear(year);
@@ -120,7 +121,8 @@ export function Photos() {
       </p>
 
       {!isDetailView && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
           {recentGalleries.map((gallery) => (
             <button
               key={`${gallery.year}-${gallery.month}`}
@@ -149,6 +151,27 @@ export function Photos() {
             </button>
           ))}
         </div>
+
+          {galleries.length > 6 && (
+          <div className="mt-6 flex justify-center">
+            {visibleCount < galleries.length ? (
+              <button
+                className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
+                onClick={() => setVisibleCount((c) => Math.min(c + 6, galleries.length))}
+              >
+                Meer
+              </button>
+            ) : (
+              <button
+                className="px-4 py-2 bg-secondary text-white rounded-md hover:opacity-90"
+                onClick={() => setVisibleCount(6)}
+              >
+                Minder
+              </button>
+            )}
+          </div>
+          )}
+        </>
       )}
 
       {isDetailView && (
