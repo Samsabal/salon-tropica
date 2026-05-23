@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import logoIcon from '../assets/logo-icon.png';
 import { buildCloudinaryImageUrl } from '../config/cloudinary';
+import { photoManifest } from '../data/photoManifest';
 
 interface GalleryMonth {
   month: number;
@@ -23,7 +24,6 @@ interface GalleryItem extends GalleryMonth {
 }
 
 export function Photos() {
-  const [galleries, setGalleries] = useState<Gallery[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
@@ -36,11 +36,7 @@ export function Photos() {
   const assetPath = (relativePath: string) =>
     `${normalizedBaseUrl}${relativePath.replace(/^\/+/, '')}`;
 
-  useEffect(() => {
-    fetch(assetPath('photos/index.json'))
-      .then((res) => res.json())
-      .then((data) => setGalleries(data.galleries));
-  }, [baseUrl]);
+  const galleries = photoManifest.galleries as unknown as Gallery[];
 
   const resolvePhotoUrl = (
     year: number,
