@@ -11,7 +11,6 @@ export function Nav() {
     ["Home", "#home"],
     ["Foto's", "#fotos"],
     ["Route", "#route"],
-    ["Gastenboek", "#gastenboek"],
     ["Contact en reservering", "#contact"],
   ];
 

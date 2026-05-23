@@ -4,7 +4,6 @@ import { Hero } from "./components/Hero";
 import { OpeningHours } from "./components/OpeningHours";
 import { Photos } from "./components/Photos";
 import { Route } from "./components/Route";
-import { Guestbook } from "./components/Guestbook";
 import { Contact } from "./components/Contact";
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
           <Hero />
           <Photos />
           <Route />
-          <Guestbook />
           <OpeningHours />
           <Contact />
         </main>
