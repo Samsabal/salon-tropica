@@ -8,6 +8,7 @@ const photosRoot = path.join(frontendRoot, 'public', 'photos');
 const indexPath = path.join(photosRoot, 'index.json');
 
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
+const cloudinaryMapPath = path.join(photosRoot, 'cloudinary-map.json');
 
 async function listImages(directoryPath) {
   try {
@@ -55,6 +56,18 @@ async function loadBaseIndex() {
   }
 }
 
+async function loadCloudinaryMap() {
+  try {
+    return JSON.parse(await readFile(cloudinaryMapPath, 'utf8'));
+  } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+      return null;
+    }
+
+    throw error;
+  }
+}
+
 async function buildDefaultIndex() {
   const yearFolders = await listDirectories(photosRoot, /^\d{4}$/);
 
@@ -85,6 +98,7 @@ async function buildDefaultIndex() {
 }
 
 const baseIndex = (await loadBaseIndex()) ?? (await buildDefaultIndex());
+const cloudinaryMap = await loadCloudinaryMap();
 
 await mkdir(photosRoot, { recursive: true });
 
@@ -99,12 +113,20 @@ const galleries = await Promise.all(
           String(month.month).padStart(2, '0')
         );
         const images = await listImages(monthFolder);
+        const cloudinaryImages = images.map((image) => ({
+          name: image,
+          publicId:
+            cloudinaryMap?.items?.[`${gallery.year}/${String(month.month).padStart(2, '0')}/${path.basename(image, path.extname(image))}`] ??
+            cloudinaryMap?.items?.[path.basename(image, path.extname(image))] ??
+            null,
+        }));
 
         return {
           ...month,
           count: images.length,
           previewImage: images[0] ?? month.previewImage,
           images,
+          cloudinaryImages,
         };
       })
     ),

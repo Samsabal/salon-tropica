@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react';
 import logoIcon from '../assets/logo-icon.png';
-import {
-  buildCloudinaryImageUrl,
-  getCloudinaryPublicId,
-  type CloudinaryMap,
-} from '../config/cloudinary';
+import { buildCloudinaryImageUrl } from '../config/cloudinary';
 
 interface GalleryMonth {
   month: number;
   count: number;
   previewImage?: string;
   images?: string[];
+  cloudinaryImages?: {
+    name: string;
+    publicId: string | null;
+  }[];
 }
 
 interface Gallery {
   year: number;
   months: GalleryMonth[];
+}
+
+interface GalleryItem extends GalleryMonth {
+  year: number;
 }
 
 export function Photos() {
@@ -26,8 +30,8 @@ export function Photos() {
   const [photosLoaded, setPhotosLoaded] = useState(0);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
-  const [cloudinaryMap, setCloudinaryMap] = useState<CloudinaryMap | null>(null);
   const baseUrl = import.meta.env.BASE_URL;
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME ?? 'dmdr29wlc';
   const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
   const assetPath = (relativePath: string) =>
     `${normalizedBaseUrl}${relativePath.replace(/^\/+/, '')}`;
@@ -38,30 +42,23 @@ export function Photos() {
       .then((data) => setGalleries(data.galleries));
   }, [baseUrl]);
 
-  useEffect(() => {
-    fetch(assetPath('photos/cloudinary-map.json'))
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setCloudinaryMap(data))
-      .catch(() => setCloudinaryMap(null));
-  }, [baseUrl]);
-
-  const resolvePhotoUrl = (year: number, month: number, imageName: string) => {
+  const resolvePhotoUrl = (
+    year: number,
+    month: number,
+    imageName: string,
+    publicId?: string | null
+  ) => {
     const monthStr = String(month).padStart(2, '0');
     const localPath = assetPath(`photos/${year}/${monthStr}/${imageName}`);
-    const publicId = getCloudinaryPublicId(cloudinaryMap, year, month, imageName);
 
-    if (!publicId || !cloudinaryMap?.cloudName) {
+    if (!publicId) {
       return localPath;
     }
 
-    return buildCloudinaryImageUrl(
-      cloudinaryMap.cloudName,
-      publicId,
-      cloudinaryMap.folderPrefix ?? ''
-    );
+    return buildCloudinaryImageUrl(cloudName, publicId);
   };
 
-  const recentGalleries = galleries
+  const recentGalleries: GalleryItem[] = galleries
     .flatMap((g) =>
       g.months.map((m) => ({
         year: g.year,
@@ -69,6 +66,7 @@ export function Photos() {
         count: m.count,
         previewImage: m.previewImage,
         images: m.images,
+        cloudinaryImages: m.cloudinaryImages,
       }))
     )
     .filter((gallery) => gallery.count > 0)
@@ -88,14 +86,19 @@ export function Photos() {
           year: gallery.year,
           month: galleryMonth.month,
           images: galleryMonth.images,
+          cloudinaryImages: galleryMonth.cloudinaryImages,
         }))
       )
       .find((gallery) => gallery.year === year && gallery.month === month);
 
     if (selectedGallery?.images?.length) {
-      const imageUrls = selectedGallery.images.map((image) =>
-        resolvePhotoUrl(year, month, image)
-      );
+      const imageUrls = selectedGallery.images.map((image) => {
+        const cloudinaryId = selectedGallery.cloudinaryImages?.find(
+          (entry) => entry.name === image
+        )?.publicId;
+
+        return resolvePhotoUrl(year, month, image, cloudinaryId);
+      });
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setIsLoadingPhotos(imageUrls.length > 0);
       setPhotos(imageUrls);
@@ -161,7 +164,10 @@ export function Photos() {
                 src={resolvePhotoUrl(
                   gallery.year,
                   gallery.month,
-                  gallery.previewImage || '00000354r-640x480.jpg'
+                  gallery.previewImage || '00000354r-640x480.jpg',
+                  gallery.cloudinaryImages?.find(
+                    (entry) => entry.name === gallery.previewImage
+                  )?.publicId
                 )}
                 alt={`${monthName(gallery.month)} ${gallery.year}`}
                 className="w-full h-full object-cover group-hover:brightness-75 transition"
