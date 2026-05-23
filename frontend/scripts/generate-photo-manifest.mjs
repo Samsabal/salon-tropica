@@ -6,6 +6,7 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const frontendRoot = path.resolve(scriptDir, '..');
 const photosRoot = path.join(frontendRoot, 'public', 'photos');
 const indexPath = path.join(photosRoot, 'index.json');
+const sourceManifestPath = path.join(frontendRoot, 'src', 'data', 'photoManifest.ts');
 
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
 const cloudinaryMapPath = path.join(photosRoot, 'cloudinary-map.json');
@@ -44,18 +45,6 @@ async function listDirectories(directoryPath, pattern) {
   }
 }
 
-async function loadBaseIndex() {
-  try {
-    return JSON.parse(await readFile(indexPath, 'utf8'));
-  } catch (error) {
-    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
-      return null;
-    }
-
-    throw error;
-  }
-}
-
 async function loadCloudinaryMap() {
   try {
     return JSON.parse(await readFile(cloudinaryMapPath, 'utf8'));
@@ -68,81 +57,69 @@ async function loadCloudinaryMap() {
   }
 }
 
-async function buildDefaultIndex() {
-  const yearFolders = await listDirectories(photosRoot, /^\d{4}$/);
-
-  if (yearFolders.length === 0) {
-    return {
-      generatedAt: new Date().toISOString(),
-      galleries: [],
-    };
-  }
-
-  return {
-    generatedAt: new Date().toISOString(),
-    galleries: await Promise.all(
-      yearFolders.map(async (yearFolder) => {
-        const monthFolders = await listDirectories(path.join(photosRoot, yearFolder), /^\d{2}$/);
-
-        return {
-          year: Number(yearFolder),
-          months: monthFolders.map((monthFolder) => ({
-            month: Number(monthFolder),
-            count: 0,
-            images: [],
-          })),
-        };
-      })
-    ),
-  };
-}
-
-const baseIndex = (await loadBaseIndex()) ?? (await buildDefaultIndex());
 const cloudinaryMap = await loadCloudinaryMap();
 
 await mkdir(photosRoot, { recursive: true });
+await mkdir(path.dirname(sourceManifestPath), { recursive: true });
+
+function stripDatePrefix(fileName) {
+  const match = fileName.match(/^\d{4}-\d{2}-\d{2}[_-](.+)$/);
+  return match ? match[1] : fileName;
+}
+
+function resolveCloudinaryPublicId(year, imageName) {
+  if (!cloudinaryMap?.items) {
+    return null;
+  }
+
+  const baseName = path.basename(imageName, path.extname(imageName));
+  const normalizedName = stripDatePrefix(baseName);
+  const monthGuess = baseName.match(/^(\d{4})-(\d{2})-(\d{2})[_-]/);
+  const month = monthGuess ? monthGuess[2] : null;
+
+  if (month) {
+    return (
+      cloudinaryMap.items[`${year}/${month}/${normalizedName}`] ??
+      cloudinaryMap.items[normalizedName] ??
+      null
+    );
+  }
+
+  return cloudinaryMap.items[normalizedName] ?? cloudinaryMap.items[baseName] ?? null;
+}
+
+const yearFolders = await listDirectories(photosRoot, /^\d{4}$/);
 
 const galleries = await Promise.all(
-  baseIndex.galleries.map(async (gallery) => ({
-    ...gallery,
-    months: await Promise.all(
-      gallery.months.map(async (month) => {
-        const monthFolder = path.join(
-          photosRoot,
-          String(gallery.year),
-          String(month.month).padStart(2, '0')
-        );
-        const images = await listImages(monthFolder);
-        const cloudinaryImages = images.map((image) => ({
-          name: image,
-          publicId:
-            cloudinaryMap?.items?.[`${gallery.year}/${String(month.month).padStart(2, '0')}/${path.basename(image, path.extname(image))}`] ??
-            cloudinaryMap?.items?.[path.basename(image, path.extname(image))] ??
-            null,
-        }));
+  yearFolders.map(async (yearFolder) => {
+    const images = await listImages(path.join(photosRoot, yearFolder));
+    const imageEntries = images.map((imageName) => ({
+      name: imageName,
+      publicId: resolveCloudinaryPublicId(Number(yearFolder), imageName),
+    }));
 
-        return {
-          ...month,
-          count: images.length,
-          previewImage: images[0] ?? month.previewImage,
-          images,
-          cloudinaryImages,
-        };
-      })
-    ),
-  }))
+    return {
+      year: Number(yearFolder),
+      count: imageEntries.length,
+      previewImage: imageEntries[0]?.name ?? null,
+      images: imageEntries,
+    };
+  })
 );
+
+const normalizedManifest = {
+  generatedAt: new Date().toISOString(),
+  galleries,
+};
 
 await writeFile(
   indexPath,
-  `${JSON.stringify(
-    {
-      ...baseIndex,
-      generatedAt: new Date().toISOString(),
-      galleries,
-    },
-    null,
-    2
-  )}\n`,
+  `${JSON.stringify(normalizedManifest, null, 2)}\n`,
+  'utf8'
+);
+
+await writeFile(
+  sourceManifestPath,
+  `export const photoManifest = ${JSON.stringify(normalizedManifest, null, 2)} as const;\n`,
   'utf8'
 );
