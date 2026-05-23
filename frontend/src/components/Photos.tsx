@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 import logoIcon from '../assets/logo-icon.png';
+import {
+  buildCloudinaryImageUrl,
+  getCloudinaryPublicId,
+  type CloudinaryMap,
+} from '../config/cloudinary';
 
 interface GalleryMonth {
   month: number;
@@ -21,6 +26,7 @@ export function Photos() {
   const [photosLoaded, setPhotosLoaded] = useState(0);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
+  const [cloudinaryMap, setCloudinaryMap] = useState<CloudinaryMap | null>(null);
   const baseUrl = import.meta.env.BASE_URL;
   const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
   const assetPath = (relativePath: string) =>
@@ -31,6 +37,29 @@ export function Photos() {
       .then((res) => res.json())
       .then((data) => setGalleries(data.galleries));
   }, [baseUrl]);
+
+  useEffect(() => {
+    fetch(assetPath('photos/cloudinary-map.json'))
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setCloudinaryMap(data))
+      .catch(() => setCloudinaryMap(null));
+  }, [baseUrl]);
+
+  const resolvePhotoUrl = (year: number, month: number, imageName: string) => {
+    const monthStr = String(month).padStart(2, '0');
+    const localPath = assetPath(`photos/${year}/${monthStr}/${imageName}`);
+    const publicId = getCloudinaryPublicId(cloudinaryMap, year, month, imageName);
+
+    if (!publicId || !cloudinaryMap?.cloudName) {
+      return localPath;
+    }
+
+    return buildCloudinaryImageUrl(
+      cloudinaryMap.cloudName,
+      publicId,
+      cloudinaryMap.folderPrefix ?? ''
+    );
+  };
 
   const recentGalleries = galleries
     .flatMap((g) =>
@@ -53,9 +82,6 @@ export function Photos() {
     setPhotosLoaded(0);
     setIsLoadingPhotos(true);
 
-    const monthStr = String(month).padStart(2, '0');
-    const basePath = assetPath(`photos/${year}/${monthStr}`);
-
     const selectedGallery = galleries
       .flatMap((gallery) =>
         gallery.months.map((galleryMonth) => ({
@@ -67,7 +93,9 @@ export function Photos() {
       .find((gallery) => gallery.year === year && gallery.month === month);
 
     if (selectedGallery?.images?.length) {
-      const imageUrls = selectedGallery.images.map((image) => `${basePath}/${image}`);
+      const imageUrls = selectedGallery.images.map((image) =>
+        resolvePhotoUrl(year, month, image)
+      );
       await new Promise((resolve) => setTimeout(resolve, 3000));
       setIsLoadingPhotos(imageUrls.length > 0);
       setPhotos(imageUrls);
@@ -86,11 +114,11 @@ export function Photos() {
 
     for (const photoName of basePhotoNames) {
       for (const size of photoSizes) {
-        const url = `${basePath}/${photoName}-${size}.jpg`;
+        const url = resolvePhotoUrl(year, month, `${photoName}-${size}.jpg`);
         photoUrls.push(url);
       }
-      photoUrls.push(`${basePath}/${photoName}.jpg`);
-      photoUrls.push(`${basePath}/${photoName}.png`);
+      photoUrls.push(resolvePhotoUrl(year, month, `${photoName}.jpg`));
+      photoUrls.push(resolvePhotoUrl(year, month, `${photoName}.png`));
     }
 
     await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -130,7 +158,11 @@ export function Photos() {
               className="group relative overflow-hidden rounded-lg h-64 transition transform hover:scale-105 cursor-pointer"
             >
               <img
-                src={assetPath(`photos/${gallery.year}/${String(gallery.month).padStart(2, '0')}/${gallery.previewImage || '00000354r-640x480.jpg'}`)}
+                src={resolvePhotoUrl(
+                  gallery.year,
+                  gallery.month,
+                  gallery.previewImage || '00000354r-640x480.jpg'
+                )}
                 alt={`${monthName(gallery.month)} ${gallery.year}`}
                 className="w-full h-full object-cover group-hover:brightness-75 transition"
                 onError={(e) => {
