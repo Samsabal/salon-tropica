@@ -26,10 +26,53 @@ async function listImages(directoryPath) {
   }
 }
 
-const index = JSON.parse(await readFile(indexPath, 'utf8'));
+async function listDirectories(directoryPath, pattern) {
+  const entries = await readdir(directoryPath, { withFileTypes: true });
+
+  return entries
+    .filter((entry) => entry.isDirectory() && pattern.test(entry.name))
+    .map((entry) => entry.name)
+    .sort((left, right) => right.localeCompare(left));
+}
+
+async function loadBaseIndex() {
+  try {
+    return JSON.parse(await readFile(indexPath, 'utf8'));
+  } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+      return null;
+    }
+
+    throw error;
+  }
+}
+
+async function buildDefaultIndex() {
+  const yearFolders = await listDirectories(photosRoot, /^\d{4}$/);
+
+  return {
+    generatedAt: new Date().toISOString(),
+    galleries: await Promise.all(
+      yearFolders.map(async (yearFolder) => {
+        const monthFolders = await listDirectories(path.join(photosRoot, yearFolder), /^\d{2}$/);
+
+        return {
+          year: Number(yearFolder),
+          months: monthFolders.map((monthFolder) => ({
+            month: Number(monthFolder),
+            count: 0,
+            images: [],
+          })),
+        };
+      })
+    ),
+  };
+}
+
+const baseIndex = (await loadBaseIndex()) ?? (await buildDefaultIndex());
 
 const galleries = await Promise.all(
-  index.galleries.map(async (gallery) => ({
+  baseIndex.galleries.map(async (gallery) => ({
     ...gallery,
     months: await Promise.all(
       gallery.months.map(async (month) => {
@@ -55,7 +98,7 @@ await writeFile(
   indexPath,
   `${JSON.stringify(
     {
-      ...index,
+      ...baseIndex,
       generatedAt: new Date().toISOString(),
       galleries,
     },
