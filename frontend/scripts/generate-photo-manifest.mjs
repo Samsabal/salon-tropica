@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -27,12 +27,20 @@ async function listImages(directoryPath) {
 }
 
 async function listDirectories(directoryPath, pattern) {
-  const entries = await readdir(directoryPath, { withFileTypes: true });
+  try {
+    const entries = await readdir(directoryPath, { withFileTypes: true });
 
-  return entries
-    .filter((entry) => entry.isDirectory() && pattern.test(entry.name))
-    .map((entry) => entry.name)
-    .sort((left, right) => right.localeCompare(left));
+    return entries
+      .filter((entry) => entry.isDirectory() && pattern.test(entry.name))
+      .map((entry) => entry.name)
+      .sort((left, right) => right.localeCompare(left));
+  } catch (error) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+      return [];
+    }
+
+    throw error;
+  }
 }
 
 async function loadBaseIndex() {
@@ -49,6 +57,13 @@ async function loadBaseIndex() {
 
 async function buildDefaultIndex() {
   const yearFolders = await listDirectories(photosRoot, /^\d{4}$/);
+
+  if (yearFolders.length === 0) {
+    return {
+      generatedAt: new Date().toISOString(),
+      galleries: [],
+    };
+  }
 
   return {
     generatedAt: new Date().toISOString(),
@@ -70,6 +85,8 @@ async function buildDefaultIndex() {
 }
 
 const baseIndex = (await loadBaseIndex()) ?? (await buildDefaultIndex());
+
+await mkdir(photosRoot, { recursive: true });
 
 const galleries = await Promise.all(
   baseIndex.galleries.map(async (gallery) => ({
