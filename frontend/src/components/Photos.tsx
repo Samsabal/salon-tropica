@@ -1,10 +1,16 @@
 import { useState, useRef, useMemo } from 'react';
 import logoIcon from '../assets/logo-icon.png';
+import { buildCloudinaryImageUrl } from '../config/cloudinary';
 import { photoManifest } from '../data/photoManifest';
 
 interface GalleryImage {
   name: string;
   publicId: string | null;
+}
+
+interface PhotoSource {
+  src: string;
+  fallbackSrc?: string;
 }
 
 interface Gallery {
@@ -16,13 +22,14 @@ interface Gallery {
 
 export function Photos() {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<PhotoSource[]>([]);
   const [photosLoaded, setPhotosLoaded] = useState(0);
   const [page, setPage] = useState(1);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
   const PAGE_SIZE = 40;
   const baseUrl = import.meta.env.BASE_URL;
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME ?? 'dmdr29wlc';
   const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
   const assetPath = (relativePath: string) =>
     `${normalizedBaseUrl}${relativePath.replace(/^\/+/, '')}`;
@@ -33,6 +40,13 @@ export function Photos() {
     return assetPath(`photos/${year}/${imageName}`);
   };
 
+  const resolvePhotoSource = (year: number, imageName: string, publicId?: string | null) => {
+    const src = resolvePhotoUrl(year, imageName);
+    const fallbackSrc = publicId ? buildCloudinaryImageUrl(cloudName, publicId) : undefined;
+
+    return { src, fallbackSrc };
+  };
+
   const recentGalleries = galleries
     .filter((gallery) => gallery.count > 0)
     .sort((a, b) => b.year - a.year)
@@ -40,17 +54,17 @@ export function Photos() {
 
   // choose a random preview image for each gallery once per render (stable while component mounted or galleries change)
   const previewMap = useMemo(() => {
-    const map = new Map<number, string>();
+    const map = new Map<number, PhotoSource>();
     galleries.forEach((gallery) => {
       const imgs = (gallery.images || [])
-        .map((img) => resolvePhotoUrl(gallery.year, img.name))
+        .map((img) => resolvePhotoSource(gallery.year, img.name, img.publicId))
         .filter(Boolean);
 
       if (imgs.length > 0) {
         const idx = Math.floor(Math.random() * imgs.length);
         map.set(gallery.year, imgs[idx]);
       } else if (gallery.previewImage) {
-        map.set(gallery.year, resolvePhotoUrl(gallery.year, gallery.previewImage || 'placeholder.jpg'));
+        map.set(gallery.year, resolvePhotoSource(gallery.year, gallery.previewImage || 'placeholder.jpg'));
       }
     });
     return map;
@@ -76,13 +90,13 @@ export function Photos() {
     }
 
     const imageUrls = selectedGallery.images.map((image) =>
-      resolvePhotoUrl(year, image.name)
+      resolvePhotoSource(year, image.name, image.publicId)
     );
 
     const preloadCount = Math.min(imageUrls.length, PAGE_SIZE);
 
     try {
-      await preloadImages(imageUrls.slice(0, preloadCount), (loaded) => {
+      await preloadImages(imageUrls.slice(0, preloadCount).map((image) => image.src), (loaded) => {
         setPhotosLoaded(loaded);
       }, preloadCancelRef.current);
 
@@ -148,7 +162,7 @@ export function Photos() {
 
     const start = page * PAGE_SIZE;
     const end = Math.min((page + 1) * PAGE_SIZE, photos.length);
-    const nextUrls = photos.slice(start, end);
+    const nextUrls = photos.slice(start, end).map((photo) => photo.src);
     if (!nextUrls.length) return;
 
     setIsLoadingPhotos(true);
@@ -186,15 +200,22 @@ export function Photos() {
               className="group relative overflow-hidden rounded-lg h-64 transition transform hover:scale-105 cursor-pointer"
             >
               <img
-                src={
-                  previewMap.get(gallery.year) || resolvePhotoUrl(gallery.year, gallery.previewImage || 'placeholder.jpg')
-                }
+                src={previewMap.get(gallery.year)?.src || resolvePhotoUrl(gallery.year, gallery.previewImage || 'placeholder.jpg')}
                 alt={`${gallery.year}`}
                 className="w-full h-full object-cover group-hover:brightness-75 transition"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
+                  const target = e.target as HTMLImageElement;
+                  const fallbackSrc = target.dataset.fallbackSrc;
+
+                  if (fallbackSrc && target.src !== fallbackSrc) {
+                    target.src = fallbackSrc;
+                    return;
+                  }
+
+                  target.src =
                     'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23333" width="400" height="300"/%3E%3C/svg%3E';
                 }}
+                data-fallback-src={previewMap.get(gallery.year)?.fallbackSrc}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
                 <h3 className="text-white font-bold text-lg">
@@ -268,14 +289,23 @@ export function Photos() {
                 {photos.slice(0, page * PAGE_SIZE).map((photo, index) => (
                 <img
                   key={index}
-                  src={photo}
+                  src={photo.src}
                   alt={`Foto ${index + 1}`}
                   className="w-full h-auto rounded-lg object-cover mb-4 break-inside-avoid"
                   onLoad={handlePhotoSettled}
                   onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    const fallbackSrc = target.dataset.fallbackSrc;
+
+                    if (fallbackSrc && target.src !== fallbackSrc) {
+                      target.src = fallbackSrc;
+                      return;
+                    }
+
                     handlePhotoSettled();
-                    (e.target as HTMLImageElement).style.display = 'none';
+                    target.style.display = 'none';
                   }}
+                  data-fallback-src={photo.fallbackSrc}
                 />
                 ))}
               </div>
