@@ -1,5 +1,5 @@
 export const photoManifest = {
-  "generatedAt": "2026-05-23T18:58:53.257Z",
+  "generatedAt": "2026-05-30T18:44:04.587Z",
   "galleries": [
     {
       "year": 2023,
@@ -717,7 +717,7 @@ export const photoManifest = {
     },
     {
       "year": 2019,
-      "count": 439,
+      "count": 306,
       "previewImage": "2019-01-25_IMG_2475-BorderMaker.jpg",
       "images": [
         {
@@ -1061,10 +1061,6 @@ export const photoManifest = {
           "publicId": "IMG_4640-BorderMaker_odrqjx"
         },
         {
-          "name": "2019-03-26_bar2-min.jpg",
-          "publicId": "bar2-min_f5ep1t"
-        },
-        {
           "name": "2019-03-29_IMG_4645-M-BorderMaker.jpg",
           "publicId": null
         },
@@ -1349,15 +1345,7 @@ export const photoManifest = {
           "publicId": "IMG_6421-BorderMaker_vcfvju"
         },
         {
-          "name": "2019-05-02_IMG_6895-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-02_IMG_6895-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-02_IMG_7004-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1365,15 +1353,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-02_IMG_7055-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-02_IMG_7055-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-02_IMG_7090-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1381,15 +1361,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-03_IMG_7110-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-03_IMG_7110-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-03_IMG_7122-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1397,15 +1369,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-03_IMG_7166-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-03_IMG_7166-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-03_IMG_7228-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1413,15 +1377,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-03_IMG_7231-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-03_IMG_7231-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-03_IMG_7253-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1429,15 +1385,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-03_IMG_7261-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-03_IMG_7261-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-04_IMG_7296-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1445,15 +1393,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-04_IMG_7307-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-04_IMG_7307-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-04_IMG_7310-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1461,15 +1401,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-04_IMG_7315-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-04_IMG_7315-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-04_IMG_7321-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1477,23 +1409,11 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-04_IMG_7351-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-04_IMG_7351-BorderMaker.jpg",
           "publicId": null
         },
         {
-          "name": "2019-05-04_IMG_7357-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-04_IMG_7357-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-04_IMG_7369-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1585,23 +1505,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-08_IMG_7460-BorderMaker-1.jpg",
-          "publicId": "IMG_7460-BorderMaker-1_sdssfy"
-        },
-        {
-          "name": "2019-05-08_IMG_7460-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-08_IMG_7460-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-08_IMG_7475-BorderMaker-1.jpg",
-          "publicId": "IMG_7475-BorderMaker-1_ndwhr1"
-        },
-        {
-          "name": "2019-05-08_IMG_7475-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1609,23 +1513,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-08_IMG_7494-BorderMaker-1.jpg",
-          "publicId": "IMG_7494-BorderMaker-1_dl6xz6"
-        },
-        {
-          "name": "2019-05-08_IMG_7494-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-08_IMG_7494-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-08_IMG_7507-BorderMaker-1.jpg",
-          "publicId": "IMG_7507-BorderMaker-1_leukyl"
-        },
-        {
-          "name": "2019-05-08_IMG_7507-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1633,23 +1521,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-09_IMG_7564-BorderMaker-1.jpg",
-          "publicId": "IMG_7564-BorderMaker-1_kmprfo"
-        },
-        {
-          "name": "2019-05-09_IMG_7564-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-09_IMG_7564-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-09_IMG_7574-BorderMaker-1.jpg",
-          "publicId": "IMG_7574-BorderMaker-1_nxd33k"
-        },
-        {
-          "name": "2019-05-09_IMG_7574-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1657,23 +1529,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-09_IMG_7584-BorderMaker-1.jpg",
-          "publicId": "IMG_7584-BorderMaker-1_zfvsxw"
-        },
-        {
-          "name": "2019-05-09_IMG_7584-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-09_IMG_7584-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-09_IMG_7606-BorderMaker-1.jpg",
-          "publicId": "IMG_7606-BorderMaker-1_pbjlvt"
-        },
-        {
-          "name": "2019-05-09_IMG_7606-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1681,23 +1537,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-09_IMG_7617-BorderMaker-1.jpg",
-          "publicId": "IMG_7617-BorderMaker-1_f62bzx"
-        },
-        {
-          "name": "2019-05-09_IMG_7617-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-09_IMG_7617-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-09_IMG_7620-BorderMaker-1.jpg",
-          "publicId": "IMG_7620-BorderMaker-1_pyaips"
-        },
-        {
-          "name": "2019-05-09_IMG_7620-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1705,23 +1545,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-10_IMG_7649-BorderMaker-1.jpg",
-          "publicId": "IMG_7649-BorderMaker-1_lode3f"
-        },
-        {
-          "name": "2019-05-10_IMG_7649-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-10_IMG_7649-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-10_IMG_7663-BorderMaker-1.jpg",
-          "publicId": "IMG_7663-BorderMaker-1_w8p3oz"
-        },
-        {
-          "name": "2019-05-10_IMG_7663-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1729,23 +1553,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-10_IMG_7671-BorderMaker-1.jpg",
-          "publicId": "IMG_7671-BorderMaker-1_q5fyam"
-        },
-        {
-          "name": "2019-05-10_IMG_7671-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-10_IMG_7671-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-10_IMG_7683-BorderMaker-1.jpg",
-          "publicId": "IMG_7683-BorderMaker-1_jmjueq"
-        },
-        {
-          "name": "2019-05-10_IMG_7683-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1753,23 +1561,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-10_IMG_7709-BorderMaker-1.jpg",
-          "publicId": "IMG_7709-BorderMaker-1_lm1p8h"
-        },
-        {
-          "name": "2019-05-10_IMG_7709-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-10_IMG_7709-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-10_IMG_7719-BorderMaker-1.jpg",
-          "publicId": "IMG_7719-BorderMaker-1_r6acto"
-        },
-        {
-          "name": "2019-05-10_IMG_7719-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1777,23 +1569,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-10_IMG_7724-BorderMaker-1.jpg",
-          "publicId": "IMG_7724-BorderMaker-1_irnbuz"
-        },
-        {
-          "name": "2019-05-10_IMG_7724-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-10_IMG_7724-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-10_IMG_7731-BorderMaker-1.jpg",
-          "publicId": "IMG_7731-BorderMaker-1_vsqfhx"
-        },
-        {
-          "name": "2019-05-10_IMG_7731-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1801,23 +1577,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-10_IMG_7744-BorderMaker-1.jpg",
-          "publicId": "IMG_7744-BorderMaker-1_y6h3ta"
-        },
-        {
-          "name": "2019-05-10_IMG_7744-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-10_IMG_7744-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-10_IMG_7779-BorderMaker-1.jpg",
-          "publicId": "IMG_7779-BorderMaker-1_x8wg7b"
-        },
-        {
-          "name": "2019-05-10_IMG_7779-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1825,23 +1585,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-11_IMG_7788-BorderMaker-1.jpg",
-          "publicId": "IMG_7788-BorderMaker-1_ecpf8n"
-        },
-        {
-          "name": "2019-05-11_IMG_7788-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-11_IMG_7788-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-11_IMG_7827-BorderMaker-1.jpg",
-          "publicId": "IMG_7827-BorderMaker-1_gj0ryy"
-        },
-        {
-          "name": "2019-05-11_IMG_7827-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1849,23 +1593,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-11_IMG_7838-BorderMaker-1.jpg",
-          "publicId": "IMG_7838-BorderMaker-1_yufjac"
-        },
-        {
-          "name": "2019-05-11_IMG_7838-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-11_IMG_7838-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-11_IMG_7875-BorderMaker-1.jpg",
-          "publicId": "IMG_7875-BorderMaker-1_yegp3d"
-        },
-        {
-          "name": "2019-05-11_IMG_7875-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1873,23 +1601,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-11_IMG_7903-BorderMaker-1.jpg",
-          "publicId": "IMG_7903-BorderMaker-1_u01vhk"
-        },
-        {
-          "name": "2019-05-11_IMG_7903-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-11_IMG_7903-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-16_IMG_7908-BorderMaker-1.jpg",
-          "publicId": "IMG_7908-BorderMaker-1_qkvjjs"
-        },
-        {
-          "name": "2019-05-16_IMG_7908-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1897,23 +1609,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-16_IMG_7923-BorderMaker-1.jpg",
-          "publicId": "IMG_7923-BorderMaker-1_vuw9vn"
-        },
-        {
-          "name": "2019-05-16_IMG_7923-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-16_IMG_7923-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-16_IMG_7942-BorderMaker-1.jpg",
-          "publicId": "IMG_7942-BorderMaker-1_unthuc"
-        },
-        {
-          "name": "2019-05-16_IMG_7942-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1921,23 +1617,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-16_IMG_7971-BorderMaker-1.jpg",
-          "publicId": "IMG_7971-BorderMaker-1_iyzlio"
-        },
-        {
-          "name": "2019-05-16_IMG_7971-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-16_IMG_7971-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-17_IMG_7977-BorderMaker-1.jpg",
-          "publicId": "IMG_7977-BorderMaker-1_ylaksb"
-        },
-        {
-          "name": "2019-05-17_IMG_7977-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1945,23 +1625,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-18_IMG_7989-BorderMaker-1.jpg",
-          "publicId": "IMG_7989-BorderMaker-1_drgxlv"
-        },
-        {
-          "name": "2019-05-18_IMG_7989-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-18_IMG_7989-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-18_IMG_7992-BorderMaker-1.jpg",
-          "publicId": "IMG_7992-BorderMaker-1_ndk8ex"
-        },
-        {
-          "name": "2019-05-18_IMG_7992-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1969,23 +1633,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-18_IMG_8002-BorderMaker-1.jpg",
-          "publicId": "IMG_8002-BorderMaker-1_g0j64f"
-        },
-        {
-          "name": "2019-05-18_IMG_8002-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-18_IMG_8002-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-18_IMG_8092-BorderMaker-1.jpg",
-          "publicId": "IMG_8092-BorderMaker-1_cb8qmv"
-        },
-        {
-          "name": "2019-05-18_IMG_8092-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -1993,23 +1641,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-18_IMG_8097-BorderMaker-1.jpg",
-          "publicId": "IMG_8097-BorderMaker-1_ve0ufc"
-        },
-        {
-          "name": "2019-05-18_IMG_8097-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-18_IMG_8097-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-18_IMG_8111-BorderMaker-1.jpg",
-          "publicId": "IMG_8111-BorderMaker-1_rjzdjn"
-        },
-        {
-          "name": "2019-05-18_IMG_8111-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2017,23 +1649,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-18_IMG_8122-BorderMaker-1.jpg",
-          "publicId": "IMG_8122-BorderMaker-1_ozxqlv"
-        },
-        {
-          "name": "2019-05-18_IMG_8122-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-18_IMG_8122-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-18_IMG_8202-BorderMaker-1.jpg",
-          "publicId": "IMG_8202-BorderMaker-1_kwkjzw"
-        },
-        {
-          "name": "2019-05-18_IMG_8202-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2041,23 +1657,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-24_IMG_8244-BorderMaker-1.jpg",
-          "publicId": "IMG_8244-BorderMaker-1_fndx6z"
-        },
-        {
-          "name": "2019-05-24_IMG_8244-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-24_IMG_8244-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-24_IMG_8287-BorderMaker-1.jpg",
-          "publicId": "IMG_8287-BorderMaker-1_wr81q1"
-        },
-        {
-          "name": "2019-05-24_IMG_8287-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2065,23 +1665,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-24_IMG_8308-BorderMaker-1.jpg",
-          "publicId": "IMG_8308-BorderMaker-1_scizsm"
-        },
-        {
-          "name": "2019-05-24_IMG_8308-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-24_IMG_8308-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-24_IMG_8314-BorderMaker-1.jpg",
-          "publicId": "IMG_8314-BorderMaker-1_oulep8"
-        },
-        {
-          "name": "2019-05-24_IMG_8314-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2089,23 +1673,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-24_IMG_8327-BorderMaker-1.jpg",
-          "publicId": "IMG_8327-BorderMaker-1_rzrgdh"
-        },
-        {
-          "name": "2019-05-24_IMG_8327-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-24_IMG_8327-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-24_IMG_8357-BorderMaker-1.jpg",
-          "publicId": "IMG_8357-BorderMaker-1_u66qwv"
-        },
-        {
-          "name": "2019-05-24_IMG_8357-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2113,23 +1681,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-24_IMG_8370-BorderMaker-1.jpg",
-          "publicId": "IMG_8370-BorderMaker-1_lycr0j"
-        },
-        {
-          "name": "2019-05-24_IMG_8370-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-24_IMG_8370-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-25_IMG_8391-BorderMaker-1.jpg",
-          "publicId": "IMG_8391-BorderMaker-1_uzstgh"
-        },
-        {
-          "name": "2019-05-25_IMG_8391-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2137,23 +1689,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-05-25_IMG_8442-BorderMaker-1.jpg",
-          "publicId": "IMG_8442-BorderMaker-1_d4cg7b"
-        },
-        {
-          "name": "2019-05-25_IMG_8442-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-05-25_IMG_8442-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-05-25_IMG_8479-BorderMaker-1.jpg",
-          "publicId": "IMG_8479-BorderMaker-1_sznkyq"
-        },
-        {
-          "name": "2019-05-25_IMG_8479-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2361,15 +1897,7 @@ export const photoManifest = {
           "publicId": "IMG_0826-BorderMaker_kbxfzk"
         },
         {
-          "name": "2019-06-28_IMG_0856-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-06-28_IMG_0856-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-06-28_IMG_0885-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2377,35 +1905,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-06-28_IMG_0899-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-06-28_IMG_0899-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-06-28_IMG_0962-BorderMaker.jpg",
-          "publicId": "IMG_0962-BorderMaker_ibeaok"
-        },
-        {
-          "name": "2019-06-28_IMG_0979-BorderMaker.jpg",
-          "publicId": "IMG_0979-BorderMaker_agulsc"
-        },
-        {
-          "name": "2019-06-28_IMG_1031-BorderMaker.jpg",
-          "publicId": "IMG_1031-BorderMaker_xgr8xs"
-        },
-        {
-          "name": "2019-06-28_IMG_1046-BorderMaker.jpg",
-          "publicId": "IMG_1046-BorderMaker_bbtyau"
-        },
-        {
-          "name": "2019-06-28_IMG_1059-BorderMaker.jpg",
-          "publicId": "IMG_1059-BorderMaker_smkk4v"
-        },
-        {
-          "name": "2019-06-28_IMG_1073-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2413,15 +1913,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-06-29_IMG_1122-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-06-29_IMG_1122-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-06-29_IMG_1140-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2429,15 +1921,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-06-29_IMG_1145-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-06-29_IMG_1145-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-06-29_IMG_1166-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2445,15 +1929,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-06-29_IMG_1175-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-06-29_IMG_1175-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-06-29_IMG_1198-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2461,15 +1937,7 @@ export const photoManifest = {
           "publicId": null
         },
         {
-          "name": "2019-06-29_IMG_1231-BorderMaker-2.jpg",
-          "publicId": null
-        },
-        {
           "name": "2019-06-29_IMG_1231-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2019-06-29_IMG_1314-BorderMaker-2.jpg",
           "publicId": null
         },
         {
@@ -2480,7 +1948,7 @@ export const photoManifest = {
     },
     {
       "year": 2018,
-      "count": 125,
+      "count": 123,
       "previewImage": "2018-06-23_IMG_8676-BorderMaker.jpg",
       "images": [
         {
@@ -2698,14 +2166,6 @@ export const photoManifest = {
         {
           "name": "2018-09-08_IMG_9908-BorderMaker.jpg",
           "publicId": "IMG_9908-BorderMaker_hsctel"
-        },
-        {
-          "name": "2018-09-12_bar.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2018-09-12_bar2.jpg",
-          "publicId": null
         },
         {
           "name": "2018-09-14_IMG_9950-BorderMaker.jpg",
@@ -3142,7 +2602,7 @@ export const photoManifest = {
     },
     {
       "year": 2016,
-      "count": 17,
+      "count": 16,
       "previewImage": "2016-08-10_IMG_8303-BorderMaker.jpg",
       "images": [
         {
@@ -3191,10 +2651,6 @@ export const photoManifest = {
         },
         {
           "name": "2016-08-30_IMG_8619-BorderMaker.jpg",
-          "publicId": null
-        },
-        {
-          "name": "2016-08-30_Webp.net-resizeimage.jpg",
           "publicId": null
         },
         {

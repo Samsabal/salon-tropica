@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import logoIcon from '../assets/logo-icon.png';
-import { buildCloudinaryImageUrl } from '../config/cloudinary';
 import { photoManifest } from '../data/photoManifest';
 
 interface GalleryImage {
@@ -19,24 +18,19 @@ export function Photos() {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
   const [photosLoaded, setPhotosLoaded] = useState(0);
+  const [page, setPage] = useState(1);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isLoadingPhotos, setIsLoadingPhotos] = useState(false);
+  const PAGE_SIZE = 40;
   const baseUrl = import.meta.env.BASE_URL;
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME ?? 'dmdr29wlc';
   const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
   const assetPath = (relativePath: string) =>
     `${normalizedBaseUrl}${relativePath.replace(/^\/+/, '')}`;
 
   const galleries = photoManifest.galleries as unknown as Gallery[];
 
-  const resolvePhotoUrl = (year: number, imageName: string, publicId?: string | null) => {
-    const localPath = assetPath(`photos/${year}/${imageName}`);
-
-    if (!publicId) {
-      return localPath;
-    }
-
-    return buildCloudinaryImageUrl(cloudName, publicId);
+  const resolvePhotoUrl = (year: number, imageName: string) => {
+    return assetPath(`photos/${year}/${imageName}`);
   };
 
   const recentGalleries = galleries
@@ -44,26 +38,93 @@ export function Photos() {
     .sort((a, b) => b.year - a.year)
     .slice(0, visibleCount);
 
+  // choose a random preview image for each gallery once per render (stable while component mounted or galleries change)
+  const previewMap = useMemo(() => {
+    const map = new Map<number, string>();
+    galleries.forEach((gallery) => {
+      const imgs = (gallery.images || [])
+        .map((img) => resolvePhotoUrl(gallery.year, img.name))
+        .filter(Boolean);
+
+      if (imgs.length > 0) {
+        const idx = Math.floor(Math.random() * imgs.length);
+        map.set(gallery.year, imgs[idx]);
+      } else if (gallery.previewImage) {
+        map.set(gallery.year, resolvePhotoUrl(gallery.year, gallery.previewImage || 'placeholder.jpg'));
+      }
+    });
+    return map;
+  }, [galleries]);
+
   const handleGalleryClick = async (year: number) => {
     setSelectedYear(year);
     setPhotos([]);
     setPhotosLoaded(0);
+    setPage(1);
     setIsLoadingPhotos(true);
-
     const selectedGallery = galleries.find((gallery) => gallery.year === year);
 
-    if (selectedGallery?.images?.length) {
-      const imageUrls = selectedGallery.images.map((image) =>
-        resolvePhotoUrl(year, image.name, image.publicId)
-      );
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      setIsLoadingPhotos(imageUrls.length > 0);
-      setPhotos(imageUrls);
+    // cancel any previous preload
+    if (preloadCancelRef.current) {
+      preloadCancelRef.current.cancel = true;
+    }
+    preloadCancelRef.current = { cancel: false };
+
+    if (!selectedGallery?.images?.length) {
+      setIsLoadingPhotos(false);
       return;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setIsLoadingPhotos(false);
+    const imageUrls = selectedGallery.images.map((image) =>
+      resolvePhotoUrl(year, image.name)
+    );
+
+    const preloadCount = Math.min(imageUrls.length, PAGE_SIZE);
+
+    try {
+      await preloadImages(imageUrls.slice(0, preloadCount), (loaded) => {
+        setPhotosLoaded(loaded);
+      }, preloadCancelRef.current);
+
+      if (preloadCancelRef.current?.cancel) return;
+
+      // show all images (first page already cached)
+      setPhotos(imageUrls);
+      setIsLoadingPhotos(false);
+      setPhotosLoaded(preloadCount);
+    } catch (err) {
+      setIsLoadingPhotos(false);
+    }
+  };
+
+  const preloadCancelRef = useRef<{ cancel: boolean } | null>(null);
+
+  const preloadImages = (
+    urls: string[],
+    onProgress: (loaded: number) => void,
+    cancelRef?: { cancel: boolean } | null
+  ) => {
+    return new Promise<void>((resolve) => {
+      let loaded = 0;
+      if (!urls.length) return resolve();
+
+      urls.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+          loaded += 1;
+          onProgress(loaded);
+          if (cancelRef?.cancel) return resolve();
+          if (loaded >= urls.length) resolve();
+        };
+        img.onerror = () => {
+          loaded += 1;
+          onProgress(loaded);
+          if (cancelRef?.cancel) return resolve();
+          if (loaded >= urls.length) resolve();
+        };
+      });
+    });
   };
 
   const handlePhotoSettled = () => {
@@ -74,6 +135,36 @@ export function Photos() {
       }
       return next;
     });
+  };
+
+  const handleShowMore = async () => {
+    if (!photos.length) return;
+
+    // cancel any previous preload
+    if (preloadCancelRef.current) {
+      preloadCancelRef.current.cancel = true;
+    }
+    preloadCancelRef.current = { cancel: false };
+
+    const start = page * PAGE_SIZE;
+    const end = Math.min((page + 1) * PAGE_SIZE, photos.length);
+    const nextUrls = photos.slice(start, end);
+    if (!nextUrls.length) return;
+
+    setIsLoadingPhotos(true);
+    const alreadyLoaded = photosLoaded;
+
+    try {
+      await preloadImages(nextUrls, (loaded) => {
+        setPhotosLoaded(alreadyLoaded + loaded);
+      }, preloadCancelRef.current);
+
+      if (preloadCancelRef.current?.cancel) return;
+
+      setPage((p) => p + 1);
+    } finally {
+      setIsLoadingPhotos(false);
+    }
   };
 
   const isDetailView = selectedYear !== null;
@@ -95,11 +186,9 @@ export function Photos() {
               className="group relative overflow-hidden rounded-lg h-64 transition transform hover:scale-105 cursor-pointer"
             >
               <img
-                src={resolvePhotoUrl(
-                  gallery.year,
-                  gallery.previewImage || 'placeholder.jpg',
-                  gallery.images.find((entry) => entry.name === gallery.previewImage)?.publicId
-                )}
+                src={
+                  previewMap.get(gallery.year) || resolvePhotoUrl(gallery.year, gallery.previewImage || 'placeholder.jpg')
+                }
                 alt={`${gallery.year}`}
                 className="w-full h-full object-cover group-hover:brightness-75 transition"
                 onError={(e) => {
@@ -119,21 +208,21 @@ export function Photos() {
           ))}
         </div>
 
-          {galleries.length > 6 && (
+            {galleries.length > 6 && (
           <div className="mt-6 flex justify-center">
             {visibleCount < galleries.length ? (
               <button
                 className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
                 onClick={() => setVisibleCount((c) => Math.min(c + 6, galleries.length))}
               >
-                Meer
+                Toon meer
               </button>
             ) : (
               <button
                 className="px-4 py-2 bg-secondary text-white rounded-md hover:opacity-90"
                 onClick={() => setVisibleCount(6)}
               >
-                Minder
+                Toon minder
               </button>
             )}
           </div>
@@ -174,8 +263,9 @@ export function Photos() {
                 </div>
               </div>
             )}
-            <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
-              {photos.map((photo, index) => (
+            <div>
+              <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
+                {photos.slice(0, page * PAGE_SIZE).map((photo, index) => (
                 <img
                   key={index}
                   src={photo}
@@ -187,7 +277,28 @@ export function Photos() {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />
-              ))}
+                ))}
+              </div>
+
+              {photos.length > PAGE_SIZE && (
+                <div className="mt-4 flex justify-center gap-3">
+                  {page * PAGE_SIZE < photos.length ? (
+                    <button
+                      className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
+                      onClick={handleShowMore}
+                    >
+                      Toon meer
+                    </button>
+                  ) : (
+                    <button
+                      className="px-4 py-2 bg-secondary text-white rounded-md hover:opacity-90"
+                      onClick={() => setPage(1)}
+                    >
+                      Toon minder
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
