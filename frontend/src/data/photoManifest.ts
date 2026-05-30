@@ -1,5 +1,5 @@
 export const photoManifest = {
-  "generatedAt": "2026-05-30T18:50:12.926Z",
+  "generatedAt": "2026-05-30T18:53:48.224Z",
   "galleries": [
     {
       "year": 2023,
