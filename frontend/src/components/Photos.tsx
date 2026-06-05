@@ -1,6 +1,7 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import logoIcon from '../assets/logo-icon.png';
 import { buildCloudinaryImageUrl } from '../config/cloudinary';
+import { getCloudinaryPublicId } from '../config/cloudinary';
 import { photoManifest } from '../data/photoManifest';
 
 interface GalleryImage {
@@ -34,17 +35,51 @@ export function Photos() {
   const assetPath = (relativePath: string) =>
     `${normalizedBaseUrl}${relativePath.replace(/^\/+/, '')}`;
 
+  const [cloudinaryMap, setCloudinaryMap] = useState<any | null>(null);
+
+  // Load cloudinary map from public files so we can resolve publicIds for images
+  useEffect(() => {
+    const url = assetPath('photos/cloudinary-map.json');
+    fetch(url, { cache: 'no-store' })
+      .then((r) => r.ok ? r.json() : null)
+      .then((json) => {
+        setCloudinaryMap(json);
+      })
+      .catch(() => setCloudinaryMap(null));
+  }, []);
+
   const galleries = photoManifest.galleries as unknown as Gallery[];
 
-  const resolvePhotoUrl = (year: number, imageName: string) => {
-    return assetPath(`photos/${year}/${imageName}`);
-  };
-
+  // Build Cloudinary-only URL for an image. Prefer explicit publicId from manifest,
+  // otherwise try to resolve via the cloudinary map. If no publicId can be found,
+  // return a small data-uri placeholder to avoid broken images.
   const resolvePhotoSource = (year: number, imageName: string, publicId?: string | null) => {
-    const src = resolvePhotoUrl(year, imageName);
-    const fallbackSrc = publicId ? buildCloudinaryImageUrl(cloudName, publicId) : undefined;
+    // try manifest publicId first
+    let id = publicId ?? null;
 
-    return { src, fallbackSrc };
+    // if no id, attempt to parse month from the filename and look up in map
+    if (!id && cloudinaryMap) {
+      try {
+        const m = imageName.match(/^(\d{4})-(\d{2})/);
+        const month = m ? parseInt(m[2], 10) : 1;
+        const lookup = getCloudinaryPublicId(cloudinaryMap, year, month, imageName);
+        if (lookup) id = lookup;
+      } catch (e) {
+        // ignore lookup errors
+      }
+    }
+
+    if (id) {
+      const folder = cloudinaryMap?.folderPrefix || '';
+      const src = buildCloudinaryImageUrl(cloudName, id, folder);
+      return { src };
+    }
+
+    // fallback tiny placeholder (data-uri SVG) so layout remains stable
+    const placeholder =
+      'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23333" width="400" height="300"/%3E%3C/svg%3E';
+
+    return { src: placeholder };
   };
 
   const recentGalleries = galleries
@@ -200,7 +235,7 @@ export function Photos() {
               className="group relative overflow-hidden rounded-lg h-64 transition transform hover:scale-105 cursor-pointer"
             >
               <img
-                src={previewMap.get(gallery.year)?.src || resolvePhotoUrl(gallery.year, gallery.previewImage || 'placeholder.jpg')}
+                src={previewMap.get(gallery.year)?.src || resolvePhotoSource(gallery.year, gallery.previewImage || 'placeholder.jpg').src}
                 alt={`${gallery.year}`}
                 className="w-full h-full object-cover group-hover:brightness-75 transition"
                 onError={(e) => {
